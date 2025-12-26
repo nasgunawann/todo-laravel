@@ -132,7 +132,7 @@
         <div class="auth-card">
             <div class="auth-header">
                 <h1 class="auth-title">Todo App</h1>
-                <p class="auth-subtitle">masuk ke akun anda</p>
+                <p class="auth-subtitle">Masuk ke akun Anda</p>
             </div>
             
             <form method="POST" action="{{ route('login') }}">
@@ -140,7 +140,7 @@
                 
                 <!-- email -->
                 <div class="mb-3">
-                    <label for="email" class="form-label">email</label>
+                    <label for="email" class="form-label">Email</label>
                     <input type="email" 
                            class="form-control @error('email') is-invalid @enderror" 
                            id="email" 
@@ -155,7 +155,7 @@
                 
                 <!-- password -->
                 <div class="mb-3">
-                    <label for="kata_sandi" class="form-label">password</label>
+                    <label for="kata_sandi" class="form-label">Password</label>
                     <input type="password" 
                            class="form-control @error('kata_sandi') is-invalid @enderror" 
                            id="kata_sandi" 
@@ -169,17 +169,17 @@
                 <!-- remember me -->
                 <div class="mb-3 form-check">
                     <input type="checkbox" class="form-check-input" id="ingat_saya" name="ingat_saya">
-                    <label class="form-check-label" for="ingat_saya">ingat saya</label>
+                    <label class="form-check-label" for="ingat_saya">Ingat Saya</label>
                 </div>
                 
                 <!-- submit -->
                 <button type="submit" class="btn btn-primary">
-                    <i class="ti ti-login"></i> masuk
+                    <i class="ti ti-login"></i> Masuk
                 </button>
             </form>
             
             <div class="auth-footer">
-                belum punya akun? <a href="{{ route('register') }}">daftar</a>
+                Belum punya akun? <a href="{{ route('register') }}">Daftar</a>
             </div>
         </div>
     </div>

@@ -42,7 +42,7 @@ class TodoController extends Controller
         $query->orderBy('disematkan', 'desc')
             ->orderBy('tenggat_waktu', 'asc');
 
-        $todos = $query->paginate(12);
+        $todos = $query->paginate(10);
         $kategori = $user->kategori()->get();
 
         return view('todo.index', compact('todos', 'kategori'));

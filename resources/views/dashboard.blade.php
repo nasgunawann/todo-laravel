@@ -22,7 +22,6 @@
                         <i class="ti ti-pin"></i>
                         Tugas Disematkan
                     </h5>
-                    <a href="{{ route('todo.index') }}" class="btn btn-sm btn-light">Lihat semua</a>
                 </div>
                 
                 <div class="block-content">
@@ -30,8 +29,8 @@
                         <div class="todo-row {{ $todo->status === 'selesai' ? 'todo-completed' : '' }}" data-todo-id="{{ $todo->id }}">
                             <div class="todo-checkbox">
                                 <input type="checkbox" class="form-check-input" 
-                                       {{ $todo->status === 'selesai' ? 'checked' : '' }}
-                                       onclick="toggleSelesai({{ $todo->id }})">
+                                    {{ $todo->status === 'selesai' ? 'checked' : '' }}
+                                    onclick="toggleSelesai({{ $todo->id }})">
                             </div>
                             
                             <div class="todo-content">
@@ -96,9 +95,7 @@
                         <i class="ti ti-clock"></i>
                         Tugas Terbaru
                     </h5>
-                    <a href="{{ route('todo.index') }}#create" class="btn btn-sm btn-dark">
-                        <i class="ti ti-plus"></i> Tugas Baru
-                    </a>
+                    <a href="{{ route('todo.index') }}" class="btn btn-sm btn-light">Lihat semua</a>
                 </div>
                 
                 <div class="block-content">
@@ -106,8 +103,8 @@
                         <div class="todo-row {{ $todo->status === 'selesai' ? 'todo-completed' : '' }}" data-todo-id="{{ $todo->id }}">
                             <div class="todo-checkbox">
                                 <input type="checkbox" class="form-check-input" 
-                                       {{ $todo->status === 'selesai' ? 'checked' : '' }}
-                                       onclick="toggleSelesai({{ $todo->id }})">
+                                    {{ $todo->status === 'selesai' ? 'checked' : '' }}
+                                    onclick="toggleSelesai({{ $todo->id }})">
                             </div>
                             
                             <div class="todo-content">
@@ -145,11 +142,11 @@
                                 @endif
                             </div>
                             
-                            <div class="todo-actions">
+                            {{-- <div class="todo-actions">
                                 <a href="{{ route('todo.index') }}#edit-{{ $todo->id }}" class="btn btn-sm btn-light border-0">
                                     <i class="ti ti-edit"></i>
                                 </a>
-                            </div>
+                            </div> --}}
                         </div>
                     @empty
                         <div class="empty-state">
