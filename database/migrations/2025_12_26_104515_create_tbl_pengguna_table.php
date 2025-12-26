@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('kata_sandi');
             $table->string('avatar')->nullable();
             $table->rememberToken(); // token ingat saya
-            $table->timestamps(); // dibuat_pada, diperbarui_pada
+            $table->timestamps(); // created_at, updated_at
         });
     }
 

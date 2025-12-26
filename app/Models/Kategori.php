@@ -8,9 +8,6 @@ class Kategori extends Model
 {
     protected $table = 'tbl_kategori';
 
-    const CREATED_AT = 'dibuat_pada';
-    const UPDATED_AT = 'diperbarui_pada';
-
     protected $fillable = [
         'pengguna_id',
         'nama',
@@ -23,10 +20,10 @@ class Kategori extends Model
         'adalah_default' => 'boolean',
     ];
 
-    // relasi ke pengguna dan todo
-    public function pengguna()
+    // relasi ke user dan todo
+    public function user()
     {
-        return $this->belongsTo(Pengguna::class, 'pengguna_id');
+        return $this->belongsTo(User::class, 'pengguna_id');
     }
 
     public function todo()

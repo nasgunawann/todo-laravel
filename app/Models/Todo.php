@@ -8,9 +8,6 @@ class Todo extends Model
 {
     protected $table = 'tbl_todo';
 
-    const CREATED_AT = 'dibuat_pada';
-    const UPDATED_AT = 'diperbarui_pada';
-
     protected $fillable = [
         'pengguna_id',
         'kategori_id',
@@ -48,10 +45,10 @@ class Todo extends Model
             ->where('status', '!=', 'selesai');
     }
 
-    // relasi ke pengguna dan kategori
-    public function pengguna()
+    // relasi ke user dan kategori
+    public function user()
     {
-        return $this->belongsTo(Pengguna::class, 'pengguna_id');
+        return $this->belongsTo(User::class, 'pengguna_id');
     }
 
     public function kategori()
