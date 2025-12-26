@@ -102,10 +102,10 @@ Sebuah aplikasi manajemen tugas berbasis web yang dirancang untuk produktivitas 
 | :---------------------------------: | :---------------------------------------: |
 | ![Login Page](public/img/login.png) | ![Register Page](public/img/register.png) |
 
-|           Dashboard Beranda            |           Daftar Tugas            |
-| :------------------------------------: | :-------------------------------: |
-| ![Dashboard](public/img/dashboard.png) | ![Todo List](public/img/todo.png) |
+|          Manajemen Kategori          |           Daftar Tugas            |
+| :----------------------------------: | :-------------------------------: |
+| ![Kategori](public/img/kategori.png) | ![Todo List](public/img/todo.png) |
 
-|          Manajemen Kategori          |
-| :----------------------------------: |
-| ![Kategori](public/img/kategori.png) |
+|           Dashboard Beranda            |
+| :------------------------------------: |
+| ![Dashboard](public/img/dashboard.png) |
