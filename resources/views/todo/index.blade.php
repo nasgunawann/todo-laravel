@@ -6,9 +6,9 @@
 <div class="container-fluid" style="max-width: 1200px;">
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h2 class="fw-bold mb-0">Semua Tugas</h2>
-        <a href="{{ route('todo.create') }}" class="btn btn-dark">
+        <button type="button" class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#createTodoModal">
             <i class="ti ti-plus"></i> Tugas Baru
-        </a>
+        </button>
     </div>
 
     <!-- filters -->
@@ -54,9 +54,9 @@
     </div>
 
     <!-- todos grid -->
-    <div class="row g-3">
+    <div class="row g-3" id="todo-grid">
         @forelse($todos as $todo)
-            <div class="col-md-6 col-lg-4">
+            <div class="col-md-6 col-lg-4" data-todo-id="{{ $todo->id }}">
                 <div class="card border h-100 todo-card-item">
                     <div class="card-body">
                         <div class="d-flex justify-content-between align-items-start mb-2">
@@ -71,7 +71,7 @@
                                 </button>
                                 <ul class="dropdown-menu dropdown-menu-end">
                                     <li>
-                                        <a class="dropdown-item" href="{{ route('todo.edit', $todo) }}">
+                                        <a class="dropdown-item" href="#" onclick="openEditModal({{ $todo->id }})">
                                             <i class="ti ti-edit"></i> Edit
                                         </a>
                                     </li>
@@ -128,9 +128,9 @@
                 <div class="text-center py-5">
                     <i class="ti ti-list-check" style="font-size: 4rem; color: #d4d4d4;"></i>
                     <p class="text-muted mt-3">Tidak ada tugas</p>
-                    <a href="{{ route('todo.create') }}" class="btn btn-dark">
+                    <button type="button" class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#createTodoModal">
                         <i class="ti ti-plus"></i> Buat tugas pertama
-                    </a>
+                    </button>
                 </div>
             </div>
         @endforelse
@@ -139,6 +139,131 @@
     <!-- pagination -->
     <div class="mt-4">
         {{ $todos->links() }}
+    </div>
+
+    <!-- Create Modal -->
+    <div class="modal fade" id="createTodoModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Tugas Baru</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <form id="createTodoForm">
+                    @csrf
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label class="form-label">Judul <span class="text-danger">*</span></label>
+                            <input type="text" name="judul" class="form-control" required>
+                            <div class="invalid-feedback"></div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Deskripsi</label>
+                            <textarea name="deskripsi" class="form-control" rows="3"></textarea>
+                            <div class="invalid-feedback"></div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Kategori</label>
+                            <select name="kategori_id" class="form-select">
+                                <option value="">Pilih kategori</option>
+                                @foreach($kategori as $kat)
+                                    <option value="{{ $kat->id }}">{{ $kat->nama }}</option>
+                                @endforeach
+                            </select>
+                            <div class="invalid-feedback"></div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Prioritas <span class="text-danger">*</span></label>
+                                <select name="prioritas" class="form-select" required>
+                                    <option value="rendah">Rendah</option>
+                                    <option value="sedang" selected>Sedang</option>
+                                    <option value="tinggi">Tinggi</option>
+                                </select>
+                                <div class="invalid-feedback"></div>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Tenggat Waktu</label>
+                                <input type="datetime-local" name="tenggat_waktu" class="form-control">
+                                <div class="invalid-feedback"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-light" data-bs-dismiss="modal">Batal</button>
+                        <button type="button" class="btn btn-dark" onclick="submitCreateTodo()">Simpan</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit Modal -->
+    <div class="modal fade" id="editTodoModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Edit Tugas</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <form id="editTodoForm">
+                    @csrf
+                    @method('PUT')
+                    <input type="hidden" id="edit_todo_id">
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label class="form-label">Judul <span class="text-danger">*</span></label>
+                            <input type="text" id="edit_judul" name="judul" class="form-control" required>
+                            <div class="invalid-feedback"></div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Deskripsi</label>
+                            <textarea id="edit_deskripsi" name="deskripsi" class="form-control" rows="3"></textarea>
+                            <div class="invalid-feedback"></div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Kategori</label>
+                            <select id="edit_kategori_id" name="kategori_id" class="form-select">
+                                <option value="">Pilih kategori</option>
+                                @foreach($kategori as $kat)
+                                    <option value="{{ $kat->id }}">{{ $kat->nama }}</option>
+                                @endforeach
+                            </select>
+                            <div class="invalid-feedback"></div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Prioritas <span class="text-danger">*</span></label>
+                                <select id="edit_prioritas" name="prioritas" class="form-select" required>
+                                    <option value="rendah">Rendah</option>
+                                    <option value="sedang">Sedang</option>
+                                    <option value="tinggi">Tinggi</option>
+                                </select>
+                                <div class="invalid-feedback"></div>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Status <span class="text-danger">*</span></label>
+                                <select id="edit_status" name="status" class="form-select" required>
+                                    <option value="tertunda">Tertunda</option>
+                                    <option value="sedang_dikerjakan">Sedang Dikerjakan</option>
+                                    <option value="selesai">Selesai</option>
+                                </select>
+                                <div class="invalid-feedback"></div>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Tenggat Waktu</label>
+                            <input type="datetime-local" id="edit_tenggat_waktu" name="tenggat_waktu" class="form-control">
+                            <div class="invalid-feedback"></div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-light" data-bs-dismiss="modal">Batal</button>
+                        <button type="button" class="btn btn-dark" onclick="submitEditTodo()">Perbarui</button>
+                    </div>
+                </form>
+            </div>
+        </div>
     </div>
 </div>
 
@@ -183,51 +308,5 @@
     color: #fff;
 }
 </style>
-@endpush
-
-@push('scripts')
-<script>
-function toggleSelesai(todoId) {
-    $.post(`/todo/${todoId}/toggle-selesai`, {
-        _token: $('meta[name="csrf-token"]').attr('content')
-    }).done(function() {
-        location.reload();
-    });
-}
-
-function togglePin(todoId) {
-    $.post(`/todo/${todoId}/toggle-sematkan`, {
-        _token: $('meta[name="csrf-token"]').attr('content')
-    }).done(function() {
-        location.reload();
-    });
-}
-
-function hapusTodo(todoId) {
-    Swal.fire({
-        title: 'Hapus todo?',
-        text: 'Tindakan ini tidak dapat dibatalkan',
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonColor: '#000',
-        cancelButtonColor: '#d33',
-        confirmButtonText: 'Ya, hapus',
-        cancelButtonText: 'Batal'
-    }).then((result) => {
-        if (result.isConfirmed) {
-            $.ajax({
-                url: `/todo/${todoId}`,
-                type: 'DELETE',
-                data: {
-                    _token: $('meta[name="csrf-token"]').attr('content')
-                },
-                success: function() {
-                    location.reload();
-                }
-            });
-        }
-    });
-}
-</script>
 @endpush
 @endsection

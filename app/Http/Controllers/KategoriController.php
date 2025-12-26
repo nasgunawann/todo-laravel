@@ -25,16 +25,19 @@ class KategoriController extends Controller
     {
         $validated = $request->validate([
             'nama' => 'required|max:100',
-            'warna' => 'required|regex:/^#[a-fA-F0-9]{6}$/',
+            'warna' => 'nullable|max:7',
             'ikon' => 'nullable|max:50',
         ], [
-            'nama.required' => 'nama kategori wajib diisi',
-            'warna.regex' => 'format warna harus hex (#000000)',
+            'nama.required' => 'Nama kategori harus diisi',
+            'nama.max' => 'Nama kategori maksimal 100 karakter',
         ]);
 
         Auth::user()->kategori()->create($validated);
 
-        return response()->json(['success' => true, 'message' => 'kategori berhasil ditambahkan']);
+        return response()->json([
+            'success' => true,
+            'message' => 'Kategori berhasil dibuat'
+        ]);
     }
 
     // update kategori
@@ -58,7 +61,10 @@ class KategoriController extends Controller
 
         $kategori->update($validated);
 
-        return response()->json(['success' => true, 'message' => 'kategori berhasil diupdate']);
+        return response()->json([
+            'success' => true,
+            'message' => 'Kategori berhasil diperbarui'
+        ]);
     }
 
     // hapus kategori
@@ -79,6 +85,9 @@ class KategoriController extends Controller
 
         $kategori->delete();
 
-        return response()->json(['success' => true, 'message' => 'kategori berhasil dihapus']);
+        return response()->json([
+            'success' => true,
+            'message' => 'Kategori berhasil dihapus'
+        ]);
     }
 }

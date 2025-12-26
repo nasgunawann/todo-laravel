@@ -67,14 +67,14 @@
                 
                 <div class="block-content">
                     @forelse($todoPenting as $todo)
-                        <div class="todo-row">
+                        <div class="todo-row" data-todo-id="{{ $todo->id }}">
                             <div class="todo-checkbox">
                                 <input type="checkbox" class="form-check-input" 
                                        {{ $todo->status === 'selesai' ? 'checked' : '' }}
                                        onclick="toggleSelesai({{ $todo->id }})">
                             </div>
                             <div class="todo-content">
-                                <div class="todo-title {{ $todo->status === 'selesai' ? 'text-decoration-line-through text-muted' : '' }}">
+                                <div class="todo-title {{ $todo->status === 'selesai' ? 'text-decoration-line-through text-muted' : '' }}" data-todo-title>
                                     {{ $todo->judul }}
                                 </div>
                                 <div class="todo-meta">
@@ -96,7 +96,7 @@
                                 </div>
                             </div>
                             <div class="todo-actions">
-                                <a href="{{ route('todo.edit', $todo) }}" class="action-btn">
+                                <a href="{{ route('todo.index') }}#edit-{{ $todo->id }}" class="action-btn">
                                     <i class="ti ti-edit"></i>
                                 </a>
                             </div>
@@ -107,7 +107,7 @@
                                 <i class="ti ti-pin" style="font-size: 3rem; color: #d4d4d4;"></i>
                             </div>
                             <p class="empty-text">Belum ada tugas yang disematkan</p>
-                            <a href="{{ route('todo.create') }}" class="btn btn-sm btn-dark">
+                            <a href="{{ route('todo.index') }}#create" class="btn btn-sm btn-dark">
                                 <i class="ti ti-plus"></i> Buat tugas pertama
                             </a>
                         </div>
@@ -122,21 +122,21 @@
                         <i class="ti ti-clock"></i>
                         Tugas Terbaru
                     </h5>
-                    <a href="{{ route('todo.create') }}" class="btn btn-sm btn-dark">
+                    <a href="{{ route('todo.index') }}#create" class="btn btn-sm btn-dark">
                         <i class="ti ti-plus"></i> Tugas Baru
                     </a>
                 </div>
                 
                 <div class="block-content">
                     @forelse($todoTerbaru as $todo)
-                        <div class="todo-row">
+                        <div class="todo-row" data-todo-id="{{ $todo->id }}">
                             <div class="todo-checkbox">
                                 <input type="checkbox" class="form-check-input" 
                                        {{ $todo->status === 'selesai' ? 'checked' : '' }}
                                        onclick="toggleSelesai({{ $todo->id }})">
                             </div>
                             <div class="todo-content">
-                                <div class="todo-title {{ $todo->status === 'selesai' ? 'text-decoration-line-through text-muted' : '' }}">
+                                <div class="todo-title {{ $todo->status === 'selesai' ? 'text-decoration-line-through text-muted' : '' }}" data-todo-title>
                                     {{ $todo->judul }}
                                 </div>
                                 <div class="todo-meta">
@@ -152,7 +152,7 @@
                                 </div>
                             </div>
                             <div class="todo-actions">
-                                <a href="{{ route('todo.edit', $todo) }}" class="action-btn">
+                                <a href="{{ route('todo.index') }}#edit-{{ $todo->id }}" class="action-btn">
                                     <i class="ti ti-edit"></i>
                                 </a>
                             </div>
@@ -163,7 +163,7 @@
                                 <i class="ti ti-list-check" style="font-size: 3rem; color: #d4d4d4;"></i>
                             </div>
                             <p class="empty-text">Belum ada tugas. Mulai atur pekerjaanmu!</p>
-                            <a href="{{ route('todo.create') }}" class="btn btn-sm btn-dark">
+                            <a href="{{ route('todo.index') }}#create" class="btn btn-sm btn-dark">
                                 <i class="ti ti-plus"></i> Buat tugas
                             </a>
                         </div>
@@ -209,7 +209,7 @@
                 </div>
                 
                 <div class="block-content">
-                    <a href="{{ route('todo.create') }}" class="quick-action">
+                    <a href="{{ route('todo.index') }}#create" class="quick-action">
                         <i class="ti ti-plus"></i>
                         <span>Tugas Baru</span>
                     </a>
@@ -479,21 +479,5 @@
     color: #737373;
 }
 </style>
-@endpush
-
-@push('scripts')
-<script>
-function toggleSelesai(todoId) {
-    $.post(`/todo/${todoId}/toggle-selesai`, {
-        _token: $('meta[name="csrf-token"]').attr('content')
-    })
-    .done(function() {
-        location.reload();
-    })
-    .fail(function() {
-        Swal.fire('Error', 'Gagal mengupdate todo', 'error');
-    });
-}
-</script>
 @endpush
 @endsection

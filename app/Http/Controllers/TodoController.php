@@ -65,18 +65,24 @@ class TodoController extends Controller
             'tenggat_waktu' => 'nullable|date',
             'prioritas' => 'required|in:tinggi,sedang,rendah',
         ], [
-            'judul.required' => 'judul wajib diisi',
-            'kategori_id.exists' => 'kategori tidak valid',
-            'tenggat_waktu.date' => 'format tanggal tidak valid',
-            'prioritas.in' => 'prioritas harus tinggi, sedang, atau rendah',
+            'judul.required' => 'Judul harus diisi',
+            'judul.max' => 'Judul maksimal 255 karakter',
+            'kategori_id.exists' => 'Kategori tidak valid',
+            'tenggat_waktu.date' => 'Format tanggal tidak valid',
+            'prioritas.in' => 'Prioritas harus tinggi, sedang, atau rendah',
         ]);
 
-        Auth::user()->todo()->create($validated);
+        $todo = Auth::user()->todo()->create($validated);
+        $todo->load('kategori');
 
-        return redirect()->route('todo.index')->with('success', 'todo berhasil ditambahkan');
+        return response()->json([
+            'success' => true,
+            'message' => 'Tugas berhasil dibuat',
+            'todo' => $todo
+        ]);
     }
 
-    // tampilkan form edit todo
+    // tampilkan data todo untuk edit (return JSON untuk AJAX)
     public function edit(Todo $todo)
     {
         // pastikan todo milik user yang login
@@ -84,8 +90,8 @@ class TodoController extends Controller
             abort(403);
         }
 
-        $kategori = Auth::user()->kategori()->get();
-        return view('todo.edit', compact('todo', 'kategori'));
+        $todo->load('kategori');
+        return response()->json($todo);
     }
 
     // update todo
@@ -103,11 +109,23 @@ class TodoController extends Controller
             'tenggat_waktu' => 'nullable|date',
             'prioritas' => 'required|in:tinggi,sedang,rendah',
             'status' => 'required|in:tertunda,sedang_dikerjakan,selesai',
+        ], [
+            'judul.required' => 'Judul harus diisi',
+            'judul.max' => 'Judul maksimal 255 karakter',
+            'kategori_id.exists' => 'Kategori tidak valid',
+            'tenggat_waktu.date' => 'Format tanggal tidak valid',
+            'prioritas.in' => 'Prioritas harus tinggi, sedang, atau rendah',
+            'status.in' => 'Status tidak valid',
         ]);
 
         $todo->update($validated);
+        $todo->load('kategori');
 
-        return redirect()->route('todo.index')->with('success', 'todo berhasil diupdate');
+        return response()->json([
+            'success' => true,
+            'message' => 'Tugas berhasil diperbarui',
+            'todo' => $todo
+        ]);
     }
 
     // hapus todo
@@ -142,7 +160,12 @@ class TodoController extends Controller
             ]);
         }
 
-        return response()->json(['success' => true, 'status' => $todo->status]);
+        $todo->load('kategori');
+        return response()->json([
+            'success' => true,
+            'message' => 'Status berhasil diupdate',
+            'todo' => $todo
+        ]);
     }
 
     // toggle pin/sematkan
@@ -153,8 +176,13 @@ class TodoController extends Controller
         }
 
         $todo->update(['disematkan' => !$todo->disematkan]);
+        $todo->load('kategori');
 
-        return response()->json(['success' => true, 'disematkan' => $todo->disematkan]);
+        return response()->json([
+            'success' => true,
+            'message' => $todo->disematkan ? 'Todo berhasil disematkan' : 'Pin berhasil dihapus',
+            'todo' => $todo
+        ]);
     }
 
     // arsipkan todo
