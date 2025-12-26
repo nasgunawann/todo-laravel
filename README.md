@@ -1,59 +1,111 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Sistem Manajemen Tugas 📝
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+![Laravel](https://img.shields.io/badge/Laravel-10.x-FF2D20?style=for-the-badge&logo=laravel&logoColor=white)
+![Bootstrap](https://img.shields.io/badge/Bootstrap-5-563D7C?style=for-the-badge&logo=bootstrap&logoColor=white)
+![jQuery](https://img.shields.io/badge/jQuery-3.7-0769AD?style=for-the-badge&logo=jquery&logoColor=white)
 
-## About Laravel
+Sebuah aplikasi manajemen tugas berbasis web yang dirancang untuk produktivitas harian. Dibangun dengan fokus pada desain minimalis (Clean UI), kecepatan, dan kemudahan penggunaan. Proyek ini dibuat sebagai **Tugas Kelompok Mata Kuliah Pemrograman Berbasis Web Lanjutan**.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+---
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## ✨ Fitur Utama
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+### 1. Dashboard Interaktif
 
-## Learning Laravel
+-   **Statistik Ringkas:** Lihat total tugas, selesai, sedang dikerjakan, dan terlambat dalam satu pandangan.
+-   **Tugas Disematkan:** Akses cepat ke tugas-tugas prioritas tinggi (Pinned).
+-   **Tugas Terbaru:** Monitoring tugas yang baru saja ditambahkan.
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework. You can also check out [Laravel Learn](https://laravel.com/learn), where you will be guided through building a modern Laravel application.
+### 2. Manajemen Tugas (CRUD)
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+-   **Modal Based:** Tambah dan edit tugas tanpa reload halaman (AJAX).
+-   **Prioritas & Kategori:** Kelompokkan tugas berdasarkan warna kategori dan tingkat urgensi (Rendah, Sedang, Tinggi).
+-   **Deadline & Pengingat:** Penanda otomatis untuk tugas yang terlambat (Overdue).
+-   **Status Progres:** Flow status (Tertunda -> Sedang Dikerjakan -> Selesai).
 
-## Laravel Sponsors
+### 3. Manajemen Kategori
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+-   **Kustomisasi:** Buat kategori sendiri dengan pilihan warna dan ikon (Tabler Icons).
+-   **Filter Cepat:** Klik kartu kategori untuk memfilter tugas terkait.
 
-### Premium Partners
+### 4. User Experience (UX) Premium
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+-   **Clean UI:** Desain "Black & White Minimalist" terinspirasi dari tool produktivitas modern (Notion-like).
+-   **Responsive:** Tampilan optimal di desktop maupun mobile.
+-   **Fast Interactions:** Hampir semua aksi (Checklist, Hapus, Edit) berjalan instan tanpa refresh.
 
-## Contributing
+---
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+## 🛠️ Tech Stack
 
-## Code of Conduct
+-   **Backend:** Laravel 12 (PHP Framework)
+-   **Frontend:** Blade Templates, Bootstrap 5, Custom CSS
+-   **Scripting:** jQuery (AJAX Handling), SweetAlert2 (Notifikasi)
+-   **Database:** MySQL
+-   **Icons:** Tabler Icons
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+---
 
-## Security Vulnerabilities
+## 👥 Anggota Kelompok
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+1. **Nasrullah Gunawan**
+2. **Maharani Br. Saragih**
+3. **Tiofandy Hasibuan**
+4. **Dzakwan Abbas**
 
-## License
+---
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+## 🚀 Cara Instalasi
+
+1. **Clone Repository**
+
+    ```bash
+    git clone https://github.com/nasgunawann/todo-laravel.git
+    cd todo-laravel
+    ```
+
+2. **Install Dependencies**
+
+    ```bash
+    composer install
+    ```
+
+3. **Setup Environment**
+
+    - Copy file `.env.example` ke `.env`
+    - Setting database di `.env`
+
+    ```bash
+    cp .env.example .env
+    php artisan key:generate
+    ```
+
+4. **Migrasi Database & Seeding**
+
+    ```bash
+    php artisan migrate --seed
+    ```
+
+    _(Seed akan membuat akun test: email `test@example.com`, password `password`)_
+
+5. **Jalankan Aplikasi**
+    ```bash
+    php artisan serve
+    ```
+    Buka `http://localhost:8000` di browser.
+
+---
+
+## 📸 Screenshot
+
+|            Halaman Login            |             Halaman Register              |
+| :---------------------------------: | :---------------------------------------: |
+| ![Login Page](public/img/login.png) | ![Register Page](public/img/register.png) |
+
+|           Dashboard Beranda            |           Daftar Tugas            |
+| :------------------------------------: | :-------------------------------: |
+| ![Dashboard](public/img/dashboard.png) | ![Todo List](public/img/todo.png) |
+
+|          Manajemen Kategori          |
+| :----------------------------------: |
+| ![Kategori](public/img/kategori.png) |
