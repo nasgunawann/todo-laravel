@@ -131,7 +131,7 @@
     <div class="auth-container">
         <div class="auth-card">
             <div class="auth-header">
-                <h1 class="auth-title">Todo App</h1>
+                <h1 class="auth-title">Sistem Manajemen Tugas</h1>
                 <p class="auth-subtitle">Masuk ke akun Anda</p>
             </div>
             

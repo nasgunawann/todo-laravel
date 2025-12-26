@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>@yield('title', 'Dashboard') - Todo App</title>
+    <title>@yield('title', 'Dashboard') - Sistem Manajemen Tugas</title>
     
     <!-- optimize CDN loading -->
     <link rel="dns-prefetch" href="https://cdn.jsdelivr.net">
@@ -226,7 +226,7 @@
         <!-- sidebar -->
         <aside class="sidebar">
             <div class="sidebar-brand">
-                <h5><i class="ti ti-checkbox"></i> Todo App</h5>
+                <h5><i class="ti ti-checkbox"></i> Manager Tugas</h5>
             </div>
             
             <div class="sidebar-menu">
