@@ -80,9 +80,7 @@
                                 <i class="ti ti-pin" style="font-size: 3rem; color: #d4d4d4;"></i>
                             </div>
                             <p class="empty-text">Belum ada tugas yang disematkan</p>
-                            <a href="{{ route('todo.index') }}#create" class="btn btn-sm btn-dark">
-                                <i class="ti ti-plus"></i> Buat tugas pertama
-                            </a>
+
                         </div>
                     @endforelse
                 </div>
@@ -176,18 +174,18 @@
                 </div>
                 
                 <div class="block-content">
-                    <a href="{{ route('todo.index') }}#create" class="quick-action">
+                    <a href="{{ route('todo.index') }}#create" class="quick-action ">
                         <i class="ti ti-plus"></i>
                         <span>Tugas Baru</span>
                     </a>
-                    <a href="{{ route('kategori.index') }}" class="quick-action">
-                        <i class="ti ti-category"></i>
-                        <span>Kelola Kategori</span>
-                    </a>
-                    <a href="{{ route('profil.edit') }}" class="quick-action">
-                        <i class="ti ti-settings"></i>
-                        <span>Pengaturan</span>
-                    </a>
+                        {{-- <a href="{{ route('kategori.index') }}" class="quick-action">
+                            <i class="ti ti-category"></i>
+                            <span>Kelola Kategori</span>
+                        </a>
+                        <a href="{{ route('profil.edit') }}" class="quick-action">
+                            <i class="ti ti-settings"></i>
+                            <span>Pengaturan</span>
+                        </a> --}}
                 </div>
             </div>
 
