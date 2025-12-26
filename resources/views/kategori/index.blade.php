@@ -17,26 +17,26 @@
     <div class="row g-3">
         @foreach($kategori as $kat)
             <div class="col-md-4">
-                <div class="card border h-100">
+                <div class="card border h-100 category-card-link" onclick="location.href='{{ route('todo.index', ['kategori_id' => $kat->id]) }}'" style="cursor: pointer; transition: all 0.2s;">
                     <div class="card-body">
                         <div class="d-flex justify-content-between align-items-start mb-3">
                             <div class="category-icon-lg">
                                 <i class="ti ti-{{ $kat->ikon ?? 'tag' }}" style="color: {{ $kat->warna }}; font-size: 2rem;"></i>
                             </div>
                             @if(!$kat->adalah_default)
-                                <div class="dropdown">
+                                <div class="dropdown" onclick="event.stopPropagation()">
                                     <button class="btn btn-sm btn-light" data-bs-toggle="dropdown">
                                         <i class="ti ti-dots-vertical"></i>
                                     </button>
                                     <ul class="dropdown-menu dropdown-menu-end">
                                         <li>
-                                            <a class="dropdown-item" href="#" onclick="editCategory({{ $kat->id }}, '{{ $kat->nama }}', '{{ $kat->warna }}', '{{ $kat->ikon }}')">
+                                            <a class="dropdown-item" href="#" onclick="editCategory({{ $kat->id }}, '{{ $kat->nama }}', '{{ $kat->warna }}', '{{ $kat->ikon }}'); return false;">
                                                 <i class="ti ti-edit"></i> Edit
                                             </a>
                                         </li>
                                         <li><hr class="dropdown-divider"></li>
                                         <li>
-                                            <a class="dropdown-item text-danger" href="#" onclick="deleteCategory({{ $kat->id }})">
+                                            <a class="dropdown-item text-danger" href="#" onclick="deleteCategory({{ $kat->id }}); return false;">
                                                 <i class="ti ti-trash"></i> Delete
                                             </a>
                                         </li>

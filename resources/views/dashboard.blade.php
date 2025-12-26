@@ -11,47 +11,7 @@
     </div>
 
     <!-- quick stats - notion style blocks -->
-    <div class="stats-grid mb-5">
-        <div class="stat-block">
-            <div class="stat-icon">
-                <i class="ti ti-list-check"></i>
-            </div>
-            <div class="stat-content">
-                <h2 class="stat-number">{{ $stats['total'] }}</h2>
-                <p class="stat-label">Total Tugas</p>
-            </div>
-        </div>
-        
-        <div class="stat-block">
-            <div class="stat-icon">
-                <i class="ti ti-circle-check"></i>
-            </div>
-            <div class="stat-content">
-                <h2 class="stat-number">{{ $stats['selesai'] }}</h2>
-                <p class="stat-label">Selesai</p>
-            </div>
-        </div>
-        
-        <div class="stat-block">
-            <div class="stat-icon">
-                <i class="ti ti-clock"></i>
-            </div>
-            <div class="stat-content">
-                <h2 class="stat-number">{{ $stats['sedang_dikerjakan'] }}</h2>
-                <p class="stat-label">Sedang Dikerjakan</p>
-            </div>
-        </div>
-        
-        <div class="stat-block">
-            <div class="stat-icon text-danger">
-                <i class="ti ti-alert-triangle"></i>
-            </div>
-            <div class="stat-content">
-                <h2 class="stat-number text-danger">{{ $stats['terlambat'] }}</h2>
-                <p class="stat-label">Terlambat</p>
-            </div>
-        </div>
-    </div>
+    <!-- stats grid removed to save space -->
 
     <div class="row g-4">
         <!-- pinned todos -->
@@ -207,34 +167,10 @@
         </div>
 
         <!-- sidebar - categories & quick actions -->
+        <!-- sidebar -->
         <div class="col-lg-4">
-            <!-- categories -->
-            <div class="notion-block">
-                <div class="block-header">
-                    <h5 class="block-title">
-                        <i class="ti ti-folder"></i>
-                        Kategori
-                    </h5>
-                    <a href="{{ route('kategori.index') }}" class="btn btn-sm btn-light">Kelola</a>
-                </div>
-                
-                <div class="block-content">
-                    @foreach($kategori as $kat)
-                        <a href="{{ route('todo.index', ['kategori_id' => $kat->id]) }}" class="category-item">
-                            <div class="category-icon">
-                                <i class="ti ti-{{ $kat->ikon ?? 'tag' }}" style="color: {{ $kat->warna }}"></i>
-                            </div>
-                            <div class="category-content">
-                                <div class="category-name">{{ $kat->nama }}</div>
-                                <div class="category-count">{{ $kat->todo_count }} tugas</div>
-                            </div>
-                        </a>
-                    @endforeach
-                </div>
-            </div>
-
-            <!-- quick actions -->
-            <div class="notion-block mt-4">
+            <!-- quick actions (top) -->
+            <div class="notion-block mb-4">
                 <div class="block-header">
                     <h5 class="block-title">
                         <i class="ti ti-bolt"></i>
@@ -257,6 +193,49 @@
                     </a>
                 </div>
             </div>
+
+            <!-- stats (middle) -->
+            <div class="notion-block mb-4">
+                <div class="block-header">
+                    <h5 class="block-title">
+                        <i class="ti ti-chart-pie"></i>
+                        Ringkasan
+                    </h5>
+                </div>
+                <!-- list style stats -->
+                <div class="stats-list">
+                    <div class="stat-item">
+                        <div class="d-flex align-items-center gap-3">
+                            <span class="stat-icon-sm bg-light text-dark"><i class="ti ti-list-check"></i></span>
+                            <span class="stat-label">Total Tugas</span>
+                        </div>
+                        <span class="stat-value">{{ $stats['total'] }}</span>
+                    </div>
+                    <div class="stat-item">
+                        <div class="d-flex align-items-center gap-3">
+                            <span class="stat-icon-sm bg-success-subtle text-success"><i class="ti ti-circle-check"></i></span>
+                            <span class="stat-label">Selesai</span>
+                        </div>
+                        <span class="stat-value">{{ $stats['selesai'] }}</span>
+                    </div>
+                    <div class="stat-item">
+                        <div class="d-flex align-items-center gap-3">
+                            <span class="stat-icon-sm bg-warning-subtle text-warning"><i class="ti ti-clock"></i></span>
+                            <span class="stat-label">Sedang Dikerjakan</span>
+                        </div>
+                        <span class="stat-value">{{ $stats['sedang_dikerjakan'] }}</span>
+                    </div>
+                    <div class="stat-item">
+                        <div class="d-flex align-items-center gap-3">
+                            <span class="stat-icon-sm bg-danger-subtle text-danger"><i class="ti ti-alert-triangle"></i></span>
+                            <span class="stat-label">Terlambat</span>
+                        </div>
+                        <span class="stat-value">{{ $stats['terlambat'] }}</span>
+                    </div>
+                </div>
+            </div>
+
+
         </div>
     </div>
 </div>
@@ -274,50 +253,50 @@
     color: #000;
 }
 
-/* stats grid */
-.stats-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 1rem;
+/* stats list */
+.stats-list {
+    padding: 0.5rem;
 }
 
-.stat-block {
+.stat-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.75rem 1rem;
+    border-radius: 6px;
+    margin-bottom: 0.25rem;
+    transition: background 0.15s;
+}
+
+.stat-item:hover {
+    background: #f9f9f9;
+}
+
+.stat-icon-sm {
     display: flex;
     align-items: center;
-    gap: 1rem;
-    padding: 1.5rem;
-    background: #fff;
-    border: 1px solid #e5e5e5;
-    border-radius: 8px;
-    transition: all 0.2s;
-}
-
-.stat-block:hover {
-    border-color: #d4d4d4;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
-}
-
-.stat-icon {
-    font-size: 2rem;
-    color: #000;
-}
-
-.stat-icon i {
-    font-size: 2rem;
-}
-
-.stat-number {
-    font-size: 1.875rem;
-    font-weight: 700;
-    margin: 0;
-    color: #000;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border-radius: 6px;
+    font-size: 1.125rem;
 }
 
 .stat-label {
-    font-size: 0.875rem;
-    color: #737373;
-    margin: 0;
+    font-size: 0.9375rem;
+    color: #404040;
 }
+
+.stat-value {
+    font-weight: 600;
+    font-size: 0.9375rem;
+    color: #171717;
+}
+
+/* bg utilities for icons */
+.bg-success-subtle { background-color: #dcfce7 !important; }
+.bg-warning-subtle { background-color: #fef9c3 !important; }
+.bg-danger-subtle { background-color: #fee2e2 !important; }
 
 /* notion blocks */
 .notion-block {
