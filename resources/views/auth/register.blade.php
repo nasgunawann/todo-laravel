@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>Daftar - Todo App</title>
+    <title>Daftar - Sistem Manajemen Tugas</title>
     
     <!-- bootstrap 5 -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -12,190 +12,310 @@
     <!-- tabler icons -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.23.0/dist/tabler-icons.min.css">
     
+    <!-- google fonts: inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
     <style>
-        /* black & white minimalist theme */
         :root {
-            --color-black: #000000;
-            --color-gray-900: #1a1a1a;
-            --color-gray-700: #404040;
-            --color-gray-300: #d4d4d4;
-            --color-gray-100: #f5f5f5;
-            --color-white: #ffffff;
+            --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            --color-black: #111111;
+            --color-gray-500: #737373;
+            --color-border: #e5e5e5;
         }
-        
+
         body {
-            background: var(--color-white);
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            font-family: var(--font-sans);
+            background-color: #f5f5f5;
             min-height: 100vh;
             display: flex;
             align-items: center;
             justify-content: center;
-            padding: 2rem 0;
-        }
-        
-        .auth-container {
-            max-width: 400px;
-            width: 100%;
-            padding: 2rem 1rem;
-        }
-        
-        .auth-card {
-            background: var(--color-white);
-            border: 1px solid var(--color-gray-300);
-            border-radius: 0.5rem;
             padding: 2rem;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        }
+
+        .auth-wrapper {
+            background: #fff;
+            width: 100%;
+            max-width: 1000px;
+            min-height: 600px;
+            border-radius: 24px;
+            box-shadow: 0 20px 40px -10px rgba(0,0,0,0.1);
+            overflow: hidden;
+            display: flex;
+        }
+
+        /* Left Side - Register Form */
+        .login-section {
+            flex: 1;
+            padding: 3rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        /* Right Side - Team Members */
+        .team-section {
+            flex: 1;
+            background: var(--color-black);
+            color: white;
+            padding: 3rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Decorative Elements in Team Section */
+        .team-section::before {
+            content: "";
+            position: absolute;
+            top: -50px;
+            right: -50px;
+            width: 200px;
+            height: 200px;
+            background: rgba(255,255,255,0.05);
+            border-radius: 50%;
         }
         
-        .auth-header {
-            text-align: center;
+        .team-section::after {
+            content: "";
+            position: absolute;
+            bottom: -50px;
+            left: -50px;
+            width: 300px;
+            height: 300px;
+            background: rgba(255,255,255,0.03);
+            border-radius: 50%;
+        }
+
+        .brand-icon {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 48px;
+            height: 48px;
+            background: var(--color-black);
+            color: #fff;
+            border-radius: 12px;
             margin-bottom: 2rem;
+            font-size: 1.5rem;
         }
-        
-        .auth-title {
-            font-size: 1.75rem;
+
+        .welcome-title {
+            font-size: 2rem;
             font-weight: 700;
             color: var(--color-black);
             margin-bottom: 0.5rem;
+            letter-spacing: -0.03em;
+            line-height: 1.2;
         }
-        
-        .auth-subtitle {
-            color: var(--color-gray-700);
-            font-size: 0.875rem;
+
+        .welcome-subtitle {
+            color: var(--color-gray-500);
+            margin-bottom: 2.5rem;
         }
-        
+
         .form-label {
-            color: var(--color-gray-900);
-            font-weight: 500;
             font-size: 0.875rem;
+            font-weight: 500;
+            color: #404040;
             margin-bottom: 0.5rem;
         }
-        
+
         .form-control {
-            border: 1px solid var(--color-gray-300);
-            border-radius: 0.375rem;
-            padding: 0.625rem 0.875rem;
+            padding: 0.75rem 1rem;
             font-size: 0.9375rem;
+            border-color: var(--color-border);
+            border-radius: 8px;
+            height: 48px;
         }
-        
+
         .form-control:focus {
             border-color: var(--color-black);
-            box-shadow: 0 0 0 3px rgba(0,0,0,0.1);
-            outline: none;
+            box-shadow: 0 0 0 4px rgba(0,0,0,0.05);
         }
-        
-        .btn-primary {
+
+        .btn-black {
             background: var(--color-black);
-            border: 2px solid var(--color-black);
-            color: var(--color-white);
-            padding: 0.625rem;
-            font-weight: 500;
+            color: white;
+            padding: 0 1.5rem;
+            border-radius: 8px;
+            font-weight: 600;
+            height: 48px;
             width: 100%;
-            border-radius: 0.375rem;
+            font-size: 0.9375rem;
+            transition: transform 0.1s;
         }
-        
-        .btn-primary:hover {
-            background: var(--color-gray-900);
-            border-color: var(--color-gray-900);
+
+        .btn-black:hover {
+            opacity: 0.9;
         }
-        
-        .auth-footer {
-            text-align: center;
-            margin-top: 1.5rem;
-            padding-top: 1.5rem;
-            border-top: 1px solid var(--color-gray-300);
-            color: var(--color-gray-700);
+
+        /* Team List Styling */
+        .team-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 2rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .team-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            position: relative;
+            z-index: 1;
+        }
+
+        .team-member {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.25rem;
+            padding: 1rem;
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 12px;
+            backdrop-filter: blur(10px);
+            transition: transform 0.2s;
+        }
+
+        .team-member:hover {
+            background: rgba(255,255,255,0.15);
+            transform: translateX(5px);
+        }
+
+        .member-avatar {
+            width: 40px;
+            height: 40px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
             font-size: 0.875rem;
         }
-        
-        .auth-footer a {
-            color: var(--color-black);
-            text-decoration: none;
-            font-weight: 500;
+
+        .member-info h6 {
+            margin: 0;
+            font-weight: 600;
+            font-size: 0.9375rem;
         }
-        
-        .auth-footer a:hover {
-            text-decoration: underline;
-        }
-        
-        .invalid-feedback {
+
+        .member-info p {
+            margin: 0;
             font-size: 0.8125rem;
+            color: rgba(255,255,255,0.6);
+        }
+
+        @media (max-width: 768px) {
+            .auth-wrapper {
+                flex-direction: column;
+                max-width: 500px;
+            }
+            .team-section {
+                display: none; /* Hide team section on mobile */
+            }
         }
     </style>
 </head>
 <body>
-    <div class="auth-container">
-        <div class="auth-card">
-            <div class="auth-header">
-                <h1 class="auth-title">Todo App</h1>
-                <p class="auth-subtitle">buat akun baru</p>
+    <div class="auth-wrapper">
+        <!-- Left Side: Register Form -->
+        <div class="login-section">
+            <div class="d-flex align-items-center gap-2 mb-4">
+                <div class="d-flex align-items-center justify-content-center rounded-2" style="width: 36px; height: 36px; background: var(--color-black);">
+                    <i class="ti ti-checkbox text-white fs-5"></i>
+                </div>
+                <span class="fw-bold text-dark" style="font-size: 1.125rem; letter-spacing: -0.01em;">Sistem Manajemen Tugas</span>
             </div>
             
+            <h1 class="welcome-title">Buat Akun Baru</h1>
+            <p class="welcome-subtitle">Lengkapi data diri untuk mendaftar.</p>
+
             <form method="POST" action="{{ route('register') }}">
                 @csrf
                 
-                <!-- nama -->
                 <div class="mb-3">
-                    <label for="nama" class="form-label">nama lengkap</label>
-                    <input type="text" 
-                           class="form-control @error('nama') is-invalid @enderror" 
-                           id="nama" 
-                           name="nama" 
-                           value="{{ old('nama') }}" 
-                           required 
-                           autofocus>
+                    <label class="form-label">Nama Lengkap</label>
+                    <input type="text" class="form-control @error('nama') is-invalid @enderror" 
+                           name="nama" value="{{ old('nama') }}" required autofocus>
                     @error('nama')
-                        <div class="invalid-feedback">{{ $message }}</div>
+                        <div class="invalid-feedback d-block mt-1">{{ $message }}</div>
                     @enderror
                 </div>
                 
-                <!-- email -->
                 <div class="mb-3">
-                    <label for="email" class="form-label">email</label>
-                    <input type="email" 
-                           class="form-control @error('email') is-invalid @enderror" 
-                           id="email" 
-                           name="email" 
-                           value="{{ old('email') }}" 
-                           required>
+                    <label class="form-label">Email</label>
+                    <input type="email" class="form-control @error('email') is-invalid @enderror" 
+                           name="email" value="{{ old('email') }}" required>
                     @error('email')
-                        <div class="invalid-feedback">{{ $message }}</div>
+                        <div class="invalid-feedback d-block mt-1">{{ $message }}</div>
                     @enderror
                 </div>
                 
-                <!-- password -->
                 <div class="mb-3">
-                    <label for="kata_sandi" class="form-label">password</label>
-                    <input type="password" 
-                           class="form-control @error('kata_sandi') is-invalid @enderror" 
-                           id="kata_sandi" 
-                           name="kata_sandi" 
-                           required>
+                    <label class="form-label">Password</label>
+                    <input type="password" class="form-control @error('kata_sandi') is-invalid @enderror" 
+                           name="kata_sandi" required>
                     @error('kata_sandi')
-                        <div class="invalid-feedback">{{ $message }}</div>
+                        <div class="invalid-feedback d-block mt-1">{{ $message }}</div>
                     @enderror
-                    <small class="text-muted">minimal 6 karakter</small>
+                    <small class="text-muted">Minimal 6 karakter</small>
                 </div>
                 
-                <!-- confirm password -->
-                <div class="mb-3">
-                    <label for="kata_sandi_confirmation" class="form-label">konfirmasi password</label>
-                    <input type="password" 
-                           class="form-control" 
-                           id="kata_sandi_confirmation" 
-                           name="kata_sandi_confirmation" 
-                           required>
+                <div class="mb-4">
+                    <label class="form-label">Konfirmasi Password</label>
+                    <input type="password" class="form-control" 
+                           name="kata_sandi_confirmation" required>
                 </div>
                 
-                <!-- submit -->
-                <button type="submit" class="btn btn-primary">
-                    <i class="ti ti-user-plus"></i> daftar
+                <button type="submit" class="btn btn-black mb-3">
+                    Daftar Sekarang
                 </button>
+
+                <p class="text-secondary mb-0" style="font-size: 0.875rem;">
+                    Sudah punya akun? <a href="{{ route('login') }}" class="text-dark fw-bold text-decoration-none">Masuk</a>
+                </p>
             </form>
-            
-            <div class="auth-footer">
-                sudah punya akun? <a href="{{ route('login') }}">masuk</a>
-            </div>
+        </div>
+
+        <!-- Right Side: Team Members -->
+        <div class="team-section">
+            <h3 class="team-title">Tugas Kelompok Matakuliah <br>Pemrograman Berbasis Web Lanjutan</h3>
+            <ul class="team-list">
+                <!-- Member 1 -->
+                <li class="team-member">
+                    <div class="member-avatar">NG</div>
+                    <div class="member-info">
+                        <h6>Nasrullah Gunawan</h6>
+                    </div>
+                </li>
+                <!-- Member 2 -->
+                <li class="team-member">
+                    <div class="member-avatar">MS</div>
+                    <div class="member-info">
+                        <h6>Maharani Br. Saragih</h6>
+                    </div>
+                </li>
+                <!-- Member 3 -->
+                <li class="team-member">
+                    <div class="member-avatar">TH</div>
+                    <div class="member-info">
+                        <h6>Tiofandy Hasibuan</h6>
+                    </div>
+                </li>
+                <!-- Member 4 -->
+                <li class="team-member">
+                    <div class="member-avatar">DA</div>
+                    <div class="member-info">
+                        <h6>Dzakwan Abbas</h6>
+                    </div>
+                </li>
+            </ul>
         </div>
     </div>
     
