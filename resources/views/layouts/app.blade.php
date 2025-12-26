@@ -35,10 +35,12 @@
             width: 240px;
             background: #f7f7f7;
             border-right: 1px solid #e5e5e5;
-            padding: 1.5rem 0;
+            padding: 1.5rem 0 0 0;
             position: fixed;
             height: 100vh;
             overflow-y: auto;
+            display: flex;
+            flex-direction: column;
         }
         
         .sidebar-brand {
@@ -89,6 +91,11 @@
             font-size: 1.125rem;
         }
         
+        .sidebar-menu {
+            flex: 1;
+            overflow-y: auto;
+        }
+        
         .sidebar-divider {
             margin: 1rem 1.5rem;
             border-top: 1px solid #e5e5e5;
@@ -116,6 +123,7 @@
             margin-top: auto;
             padding: 1rem 1.5rem;
             border-top: 1px solid #e5e5e5;
+            flex-shrink: 0;
         }
         
         .user-menu-trigger {
@@ -143,6 +151,7 @@
             justify-content: center;
             font-weight: 600;
             font-size: 0.875rem;
+            flex-shrink: 0;
         }
         
         .user-info {
@@ -154,6 +163,10 @@
             font-weight: 500;
             color: #000;
             margin: 0;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            max-width: 140px;
         }
         
         /* responsive */
@@ -203,39 +216,30 @@
                 <h5><i class="ti ti-checkbox"></i> Todo App</h5>
             </div>
             
-            <ul class="sidebar-nav">
-                <li class="nav-item">
-                    <a href="{{ route('dashboard') }}" class="nav-link {{ request()->routeIs('dashboard') ? 'active' : '' }}">
-                        <i class="ti ti-home"></i>
-                        <span>Beranda</span>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="{{ route('todo.index') }}" class="nav-link {{ request()->routeIs('todo.*') ? 'active' : '' }}">
-                        <i class="ti ti-list-check"></i>
-                        <span>Semua Tugas</span>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="{{ route('kategori.index') }}" class="nav-link {{ request()->routeIs('kategori.*') ? 'active' : '' }}">
-                        <i class="ti ti-category"></i>
-                        <span>Kategori</span>
-                    </a>
-                </li>
-            </ul>
+            <div class="sidebar-menu">
+                <ul class="sidebar-nav">
+                    <li class="nav-item">
+                        <a href="{{ route('dashboard') }}" class="nav-link {{ request()->routeIs('dashboard') ? 'active' : '' }}">
+                            <i class="ti ti-home"></i>
+                            <span>Beranda</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{{ route('todo.index') }}" class="nav-link {{ request()->routeIs('todo.*') ? 'active' : '' }}">
+                            <i class="ti ti-list-check"></i>
+                            <span>Semua Tugas</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{{ route('kategori.index') }}" class="nav-link {{ request()->routeIs('kategori.*') ? 'active' : '' }}">
+                            <i class="ti ti-category"></i>
+                            <span>Kategori</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
             
-            <div class="sidebar-divider"></div>
-            
-            <ul class="sidebar-nav">
-                <li class="nav-item">
-                    <a href="{{ route('profil.edit') }}" class="nav-link {{ request()->routeIs('profil.*') ? 'active' : '' }}">
-                        <i class="ti ti-settings"></i>
-                        <span>Pengaturan</span>
-                    </a>
-                </li>
-            </ul>
-            
-            <div style="flex: 1"></div>
+
             
             <div class="user-menu">
                 <div class="user-menu-trigger" data-bs-toggle="dropdown">
@@ -245,7 +249,6 @@
                     <div class="user-info">
                         <p class="user-name">{{ Auth::user()->nama }}</p>
                     </div>
-                    <i class="ti ti-dots-vertical" style="color: #737373"></i>
                 </div>
                 <ul class="dropdown-menu dropdown-menu-end">
                     <li>
