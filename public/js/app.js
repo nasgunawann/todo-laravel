@@ -49,40 +49,51 @@ function showValidationErrors(xhr, form) {
 // helper: build todo card html
 // =====================================
 function buildTodoCard(todo) {
-    let kategoriIcon = todo.kategori ? `<i class="ti ti-${todo.kategori.ikon || 'tag'}" style="color: ${todo.kategori.warna}"></i>` : '';
-    let kategoriNama = todo.kategori ? todo.kategori.nama : '';
+    let completed = todo.status === 'selesai' ? 'todo-completed' : '';
     let checked = todo.status === 'selesai' ? 'checked' : '';
-    let completed = todo.status === 'selesai' ? 'text-decoration-line-through text-muted' : '';
-    let pinned = todo.disematkan ? '<i class="ti ti-pin text-dark"></i>' : '';
+    let kategoriIcon = todo.kategori ? `<span class="kategori-badge"><i class="ti ti-${todo.kategori.ikon || 'tag'}" style="color: ${todo.kategori.warna}"></i></span>` : '';
+    let pinIcon = todo.disematkan ? '<span class="pin-badge"><i class="ti ti-pin-filled"></i></span>' : '';
+    let priorityColor = {'tinggi': '#dc2626', 'sedang': '#ea580c', 'rendah': '#0284c7'}[todo.prioritas];
     
     return `
-        <div class="col-md-6 col-lg-4" data-todo-id="${todo.id}">
-            <div class="card border h-100 todo-card-item">
-                <div class="card-body">
-                    <div class="d-flex justify-content-between align-items-start mb-2">
-                        <div class="form-check">
-                            <input type="checkbox" class="form-check-input" ${checked}
-                                   onclick="toggleSelesai(${todo.id})">
-                        </div>
-                        <div class="dropdown">
-                            <button class="btn btn-sm btn-light" data-bs-toggle="dropdown">
-                                <i class="ti ti-dots-vertical"></i>
-                            </button>
-                            <ul class="dropdown-menu dropdown-menu-end">
-                                <li><a class="dropdown-item" href="#" onclick="openEditModal(${todo.id})"><i class="ti ti-edit"></i> Edit</a></li>
-                                <li><a class="dropdown-item" href="#" onclick="togglePin(${todo.id})"><i class="ti ti-pin"></i> ${todo.disematkan ? 'Lepas Pin' : 'Sematkan'}</a></li>
-                                <li><hr class="dropdown-divider"></li>
-                                <li><a class="dropdown-item text-danger" href="#" onclick="hapusTodo(${todo.id})"><i class="ti ti-trash"></i> Hapus</a></li>
-                            </ul>
-                        </div>
+        <div class="todo-row ${completed}" data-todo-id="${todo.id}">
+            <div class="todo-checkbox">
+                <input type="checkbox" class="form-check-input" ${checked}
+                       onclick="toggleSelesai(${todo.id})">
+            </div>
+            
+            <div class="todo-content">
+                <h6 class="todo-title">${todo.judul}</h6>
+                ${todo.deskripsi ? `<p class="todo-description">${todo.deskripsi.substring(0, 100)}</p>` : ''}
+                ${todo.tenggat_waktu ? `
+                    <div class="todo-deadline ${todo.apakah_terlambat ? 'deadline-overdue' : ''}">
+                        <i class="ti ti-calendar"></i>
+                        <span>${new Date(todo.tenggat_waktu).toLocaleString('id-ID', {day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit'})}</span>
+                        ${todo.apakah_terlambat && todo.status !== 'selesai' ? '<span class="badge-overdue">Terlambat</span>' : ''}
                     </div>
-                    <h6 class="mb-2 ${completed}">${pinned} ${todo.judul}</h6>
-                    ${todo.deskripsi ? `<p class="text-muted small mb-3">${todo.deskripsi.substring(0, 80)}...</p>` : ''}
-                    <div class="d-flex flex-wrap gap-1 mb-2">
-                        ${kategoriNama ? `<span class="badge bg-light text-dark border">${kategoriIcon} ${kategoriNama}</span>` : ''}
-                        <span class="badge priority-${todo.prioritas}">${todo.prioritas}</span>
-                        <span class="badge status-${todo.status}">${todo.status.replace('_', ' ')}</span>
-                    </div>
+                ` : ''}
+            </div>
+            
+            <div class="todo-meta">
+                ${kategoriIcon}
+                <span class="priority-badge priority-${todo.prioritas}">
+                    <i class="ti ti-point-filled"></i>
+                    <span class="priority-text">${todo.prioritas.charAt(0).toUpperCase() + todo.prioritas.slice(1)}</span>
+                </span>
+                ${pinIcon}
+            </div>
+            
+            <div class="todo-actions">
+                <div class="dropdown">
+                    <button class="btn btn-sm btn-light border-0" data-bs-toggle="dropdown">
+                        <i class="ti ti-dots-vertical"></i>
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-end">
+                        <li><a class="dropdown-item" href="#" onclick="openEditModal(${todo.id});return false;"><i class="ti ti-edit"></i> Edit</a></li>
+                        <li><a class="dropdown-item" href="#" onclick="togglePin(${todo.id});return false;"><i class="ti ti-pin"></i> ${todo.disematkan ? 'Lepas Pin' : 'Sematkan'}</a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item text-danger" href="#" onclick="hapusTodo(${todo.id});return false;"><i class="ti ti-trash"></i> Hapus</a></li>
+                    </ul>
                 </div>
             </div>
         </div>
@@ -106,16 +117,15 @@ function toggleSelesai(todoId) {
         
         // update dashboard todo row (if exists)
         const dashboardRow = $(`.todo-row[data-todo-id="${todoId}"]`);
-        if (dashboardRow.length) {
+        if (dashboardRow.length && !$('#todo-grid').length) {
             const checkbox = dashboardRow.find('input[type="checkbox"]');
-            const titleDiv = dashboardRow.find('[data-todo-title]');
             
             if (todo.status === 'selesai') {
                 checkbox.prop('checked', true);
-                titleDiv.addClass('text-decoration-line-through text-muted');
+                dashboardRow.addClass('todo-completed');
             } else {
                 checkbox.prop('checked', false);
-                titleDiv.removeClass('text-decoration-line-through text-muted');
+                dashboardRow.removeClass('todo-completed');
             }
         }
         

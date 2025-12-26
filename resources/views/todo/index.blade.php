@@ -3,7 +3,7 @@
 @section('title', 'Semua Tugas')
 
 @section('content')
-<div class="container-fluid" style="max-width: 1200px;">
+<div class="container-fluid" style="max-width: 900px;">
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h2 class="fw-bold mb-0">Semua Tugas</h2>
         <button type="button" class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#createTodoModal">
@@ -20,7 +20,7 @@
                 </div>
                 <div class="col-md-2">
                     <select name="status" class="form-select">
-                        <option value="">Semua Status</option>
+                        <option value="">Status</option>
                         <option value="tertunda" {{ request('status') === 'tertunda' ? 'selected' : '' }}>Tertunda</option>
                         <option value="sedang_dikerjakan" {{ request('status') === 'sedang_dikerjakan' ? 'selected' : '' }}>Sedang Dikerjakan</option>
                         <option value="selesai" {{ request('status') === 'selesai' ? 'selected' : '' }}>Selesai</option>
@@ -28,7 +28,7 @@
                 </div>
                 <div class="col-md-2">
                     <select name="prioritas" class="form-select">
-                        <option value="">Semua Prioritas</option>
+                        <option value="">Prioritas</option>
                         <option value="tinggi" {{ request('prioritas') === 'tinggi' ? 'selected' : '' }}>Tinggi</option>
                         <option value="sedang" {{ request('prioritas') === 'sedang' ? 'selected' : '' }}>Sedang</option>
                         <option value="rendah" {{ request('prioritas') === 'rendah' ? 'selected' : '' }}>Rendah</option>
@@ -36,7 +36,7 @@
                 </div>
                 <div class="col-md-3">
                     <select name="kategori_id" class="form-select">
-                        <option value="">Semua Kategori</option>
+                        <option value="">Kategori</option>
                         @foreach($kategori as $kat)
                             <option value="{{ $kat->id }}" {{ request('kategori_id') == $kat->id ? 'selected' : '' }}>
                                 {{ $kat->nama }}
@@ -53,85 +53,72 @@
         </div>
     </div>
 
-    <!-- todos grid -->
-    <div class="row g-3" id="todo-grid">
+    <!-- todos list -->
+    <div id="todo-grid">
         @forelse($todos as $todo)
-            <div class="col-md-6 col-lg-4" data-todo-id="{{ $todo->id }}">
-                <div class="card border h-100 todo-card-item">
-                    <div class="card-body">
-                        <div class="d-flex justify-content-between align-items-start mb-2">
-                            <div class="form-check">
-                                <input type="checkbox" class="form-check-input" 
-                                       {{ $todo->status === 'selesai' ? 'checked' : '' }}
-                                       onclick="toggleSelesai({{ $todo->id }})">
-                            </div>
-                            <div class="dropdown">
-                                <button class="btn btn-sm btn-light" data-bs-toggle="dropdown">
-                                    <i class="ti ti-dots-vertical"></i>
-                                </button>
-                                <ul class="dropdown-menu dropdown-menu-end">
-                                    <li>
-                                        <a class="dropdown-item" href="#" onclick="openEditModal({{ $todo->id }})">
-                                            <i class="ti ti-edit"></i> Edit
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a class="dropdown-item" href="#" onclick="togglePin({{ $todo->id }})">
-                                            <i class="ti ti-pin"></i> {{ $todo->disematkan ? 'Lepas Pin' : 'Sematkan' }}
-                                        </a>
-                                    </li>
-                                    <li><hr class="dropdown-divider"></li>
-                                    <li>
-                                        <a class="dropdown-item text-danger" href="#" onclick="hapusTodo({{ $todo->id }})">
-                                            <i class="ti ti-trash"></i> Hapus
-                                        </a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-
-                        <h6 class="mb-2 {{ $todo->status === 'selesai' ? 'text-decoration-line-through text-muted' : '' }}">
-                            @if($todo->disematkan)
-                                <i class="ti ti-pin text-dark"></i>
+            <div class="todo-row {{ $todo->status === 'selesai' ? 'todo-completed' : '' }}" data-todo-id="{{ $todo->id }}">
+                <div class="todo-checkbox">
+                    <input type="checkbox" class="form-check-input" 
+                           {{ $todo->status === 'selesai' ? 'checked' : '' }}
+                           onclick="toggleSelesai({{ $todo->id }})">
+                </div>
+                
+                <div class="todo-content">
+                    <h6 class="todo-title">{{ $todo->judul }}</h6>
+                    @if($todo->deskripsi)
+                        <p class="todo-description">{{ Str::limit($todo->deskripsi, 100) }}</p>
+                    @endif
+                    @if($todo->tenggat_waktu)
+                        <div class="todo-deadline {{ $todo->apakah_terlambat ? 'deadline-overdue' : '' }}">
+                            <i class="ti ti-calendar"></i>
+                            <span>{{ $todo->tenggat_waktu->format('d M Y, H:i') }}</span>
+                            @if($todo->apakah_terlambat && $todo->status !== 'selesai')
+                                <span class="badge-overdue">Terlambat</span>
                             @endif
-                            {{ $todo->judul }}
-                        </h6>
-
-                        @if($todo->deskripsi)
-                            <p class="text-muted small mb-3">{{ Str::limit($todo->deskripsi, 80) }}</p>
-                        @endif
-
-                        <div class="d-flex flex-wrap gap-1 mb-2">
-                            @if($todo->kategori)
-                                <span class="badge bg-light text-dark border">
-                                    <i class="ti ti-{{ $todo->kategori->ikon ?? 'tag' }}" style="color: {{ $todo->kategori->warna }}"></i>
-                                    {{ $todo->kategori->nama }}
-                                </span>
-                            @endif
-                            <span class="badge priority-{{ $todo->prioritas }}">{{ $todo->prioritas }}</span>
-                            <span class="badge status-{{ $todo->status }}">{{ str_replace('_', ' ', $todo->status) }}</span>
                         </div>
-
-                        @if($todo->tenggat_waktu)
-                            <div class="text-muted small">
-                                <i class="ti ti-calendar"></i> {{ $todo->tenggat_waktu->format('d M Y, H:i') }}
-                                @if($todo->apakah_terlambat)
-                                    <span class="text-danger">(Terlambat)</span>
-                                @endif
-                            </div>
-                        @endif
+                    @endif
+                </div>
+                
+                <div class="todo-meta">
+                    @if($todo->kategori)
+                        <span class="kategori-badge">
+                            <i class="ti ti-{{ $todo->kategori->ikon ?? 'tag' }}" style="color: {{ $todo->kategori->warna }}"></i>
+                        </span>
+                    @endif
+                    
+                    <span class="priority-badge priority-{{ $todo->prioritas }}">
+                        <i class="ti ti-point-filled"></i>
+                        <span class="priority-text">{{ ucfirst($todo->prioritas) }}</span>
+                    </span>
+                    
+                    @if($todo->disematkan)
+                        <span class="pin-badge">
+                            <i class="ti ti-pin-filled"></i>
+                        </span>
+                    @endif
+                </div>
+                
+                <div class="todo-actions">
+                    <div class="dropdown">
+                        <button class="btn btn-sm btn-light border-0" data-bs-toggle="dropdown">
+                            <i class="ti ti-dots-vertical"></i>
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-end">
+                            <li><a class="dropdown-item" href="#" onclick="openEditModal({{ $todo->id}});return false;"><i class="ti ti-edit"></i> Edit</a></li>
+                            <li><a class="dropdown-item" href="#" onclick="togglePin({{ $todo->id }});return false;"><i class="ti ti-pin"></i> {{ $todo->disematkan ? 'Lepas Pin' : 'Sematkan' }}</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item text-danger" href="#" onclick="hapusTodo({{ $todo->id }});return false;"><i class="ti ti-trash"></i> Hapus</a></li>
+                        </ul>
                     </div>
                 </div>
             </div>
         @empty
-            <div class="col-12">
-                <div class="text-center py-5">
-                    <i class="ti ti-list-check" style="font-size: 4rem; color: #d4d4d4;"></i>
-                    <p class="text-muted mt-3">Tidak ada tugas</p>
-                    <button type="button" class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#createTodoModal">
-                        <i class="ti ti-plus"></i> Buat tugas pertama
-                    </button>
-                </div>
+            <div class="text-center py-5">
+                <i class="ti ti-list-check" style="font-size: 4rem; color: #d4d4d4;"></i>
+                <p class="text-muted mt-3">Tidak ada tugas</p>
+                <button type="button" class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#createTodoModal">
+                    <i class="ti ti-plus"></i> Buat tugas pertama
+                </button>
             </div>
         @endforelse
     </div>
@@ -269,43 +256,144 @@
 
 @push('styles')
 <style>
-.todo-card-item {
-    transition: all 0.2s;
+/* todo row list */
+.todo-row {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem;
+    border-bottom: 1px solid #e5e5e5;
+    transition: background 0.15s;
 }
 
-.todo-card-item:hover {
-    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-    transform: translateY(-2px);
+.todo-row:hover {
+    background: #f9f9f9;
 }
 
-.priority-tinggi {
-    background: #fee;
-    color: #c00;
-}
-
-.priority-sedang {
-    background: #fef3e0;
-    color: #c70;
-}
-
-.priority-rendah {
-    background: #e0f2fe;
-    color: #0369a1;
-}
-
-.status-tertunda {
+.todo-row.todo-completed {
     background: #f5f5f5;
+}
+
+.todo-row.todo-completed .todo-title,
+.todo-row.todo-completed .todo-description {
+    text-decoration: line-through;
+    color: #a3a3a3;
+}
+
+.todo-checkbox {
+    flex-shrink: 0;
+}
+
+.todo-content {
+    flex: 1;
+    min-width: 0;
+}
+
+.todo-title {
+    font-size: 0.9375rem;
+    font-weight: 500;
+    margin: 0;
+    color: #000;
+}
+
+.todo-description {
+    font-size: 0.875rem;
     color: #737373;
+    margin: 0.25rem 0 0 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
-.status-sedang_dikerjakan {
-    background: #e0f2fe;
-    color: #0369a1;
+.todo-deadline {
+    display: flex;
+    align-items: center;
+    gap: 0.375rem;
+    font-size: 0.8125rem;
+    color: #737373;
+    margin-top: 0.375rem;
 }
 
-.status-selesai {
-    background: #000;
-    color: #fff;
+.todo-deadline i {
+    font-size: 0.875rem;
+}
+
+.todo-deadline.deadline-overdue {
+    color: #dc2626;
+}
+
+.badge-overdue {
+    font-size: 0.75rem;
+    padding: 0.125rem 0.375rem;
+    background: #fee;
+    color: #dc2626;
+    border-radius: 0.25rem;
+    font-weight: 500;
+}
+
+.todo-meta {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex-shrink: 0;
+}
+
+.kategori-badge i,
+.pin-badge i {
+    font-size: 1.125rem;
+}
+
+.priority-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    padding: 0.25rem 0.625rem;
+    border-radius: 1rem;
+    font-size: 0.8125rem;
+    font-weight: 500;
+}
+
+.priority-badge i {
+    font-size: 0.875rem;
+}
+
+.priority-badge.priority-tinggi {
+    background: #fee;
+    color: #991b1b;
+}
+
+.priority-badge.priority-tinggi i {
+    color: #dc2626;
+}
+
+.priority-badge.priority-sedang {
+    background: #fef3c7;
+    color: #92400e;
+}
+
+.priority-badge.priority-sedang i {
+    color: #f59e0b;
+}
+
+.priority-badge.priority-rendah {
+    background: #dbeafe;
+    color: #1e40af;
+}
+
+.priority-badge.priority-rendah i {
+    color: #3b82f6;
+}
+
+.todo-actions {
+    flex-shrink: 0;
+}
+
+.todo-actions .btn {
+    background: transparent;
+}
+
+.todo-actions .btn:hover {
+    background: #e5e5e5;
 }
 </style>
 @endpush

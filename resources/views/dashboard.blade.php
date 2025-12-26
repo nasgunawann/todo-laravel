@@ -67,36 +67,50 @@
                 
                 <div class="block-content">
                     @forelse($todoPenting as $todo)
-                        <div class="todo-row" data-todo-id="{{ $todo->id }}">
+                        <div class="todo-row {{ $todo->status === 'selesai' ? 'todo-completed' : '' }}" data-todo-id="{{ $todo->id }}">
                             <div class="todo-checkbox">
                                 <input type="checkbox" class="form-check-input" 
                                        {{ $todo->status === 'selesai' ? 'checked' : '' }}
                                        onclick="toggleSelesai({{ $todo->id }})">
                             </div>
+                            
                             <div class="todo-content">
-                                <div class="todo-title {{ $todo->status === 'selesai' ? 'text-decoration-line-through text-muted' : '' }}" data-todo-title>
-                                    {{ $todo->judul }}
-                                </div>
-                                <div class="todo-meta">
-                                    @if($todo->kategori)
-                                        <span class="meta-badge">
-                                            <i class="ti ti-{{ $todo->kategori->ikon ?? 'tag' }}" style="color: {{ $todo->kategori->warna }}"></i>
-                                            {{ $todo->kategori->nama }}
-                                        </span>
-                                    @endif
-                                    <span class="meta-badge priority-{{ $todo->prioritas }}">
-                                        {{ $todo->prioritas }}
-                                    </span>
-                                    @if($todo->tenggat_waktu)
-                                        <span class="meta-badge">
-                                            <i class="ti ti-calendar"></i>
-                                            {{ $todo->tenggat_waktu->format('M d') }}
-                                        </span>
-                                    @endif
-                                </div>
+                                <h6 class="todo-title">{{ $todo->judul }}</h6>
+                                @if($todo->deskripsi)
+                                    <p class="todo-description">{{ Str::limit($todo->deskripsi, 80) }}</p>
+                                @endif
+                                @if($todo->tenggat_waktu)
+                                    <div class="todo-deadline {{ $todo->apakah_terlambat ? 'deadline-overdue' : '' }}">
+                                        <i class="ti ti-calendar"></i>
+                                        <span>{{ $todo->tenggat_waktu->format('d M Y, H:i') }}</span>
+                                        @if($todo->apakah_terlambat && $todo->status !== 'selesai')
+                                            <span class="badge-overdue">Terlambat</span>
+                                        @endif
+                                    </div>
+                                @endif
                             </div>
+                            
+                            <div class="todo-meta">
+                                @if($todo->kategori)
+                                    <span class="kategori-badge">
+                                        <i class="ti ti-{{ $todo->kategori->ikon ?? 'tag' }}" style="color: {{ $todo->kategori->warna }}"></i>
+                                    </span>
+                                @endif
+                                
+                                <span class="priority-badge priority-{{ $todo->prioritas }}">
+                                    <i class="ti ti-point-filled"></i>
+                                    <span class="priority-text">{{ ucfirst($todo->prioritas) }}</span>
+                                </span>
+                                
+                                @if($todo->disematkan)
+                                    <span class="pin-badge">
+                                        <i class="ti ti-pin-filled"></i>
+                                    </span>
+                                @endif
+                            </div>
+                            
                             <div class="todo-actions">
-                                <a href="{{ route('todo.index') }}#edit-{{ $todo->id }}" class="action-btn">
+                                <a href="{{ route('todo.index') }}#edit-{{ $todo->id }}" class="btn btn-sm btn-light border-0">
                                     <i class="ti ti-edit"></i>
                                 </a>
                             </div>
@@ -129,30 +143,50 @@
                 
                 <div class="block-content">
                     @forelse($todoTerbaru as $todo)
-                        <div class="todo-row" data-todo-id="{{ $todo->id }}">
+                        <div class="todo-row {{ $todo->status === 'selesai' ? 'todo-completed' : '' }}" data-todo-id="{{ $todo->id }}">
                             <div class="todo-checkbox">
                                 <input type="checkbox" class="form-check-input" 
                                        {{ $todo->status === 'selesai' ? 'checked' : '' }}
                                        onclick="toggleSelesai({{ $todo->id }})">
                             </div>
+                            
                             <div class="todo-content">
-                                <div class="todo-title {{ $todo->status === 'selesai' ? 'text-decoration-line-through text-muted' : '' }}" data-todo-title>
-                                    {{ $todo->judul }}
-                                </div>
-                                <div class="todo-meta">
-                                    @if($todo->kategori)
-                                        <span class="meta-badge">
-                                            <i class="ti ti-{{ $todo->kategori->ikon ?? 'tag' }}" style="color: {{ $todo->kategori->warna}}"></i>
-                                            {{ $todo->kategori->nama }}
-                                        </span>
-                                    @endif
-                                    <span class="meta-badge status-{{ $todo->status }}">
-                                        {{ str_replace('_', ' ', $todo->status) }}
-                                    </span>
-                                </div>
+                                <h6 class="todo-title">{{ $todo->judul }}</h6>
+                                @if($todo->deskripsi)
+                                    <p class="todo-description">{{ Str::limit($todo->deskripsi, 80) }}</p>
+                                @endif
+                                @if($todo->tenggat_waktu)
+                                    <div class="todo-deadline {{ $todo->apakah_terlambat ? 'deadline-overdue' : '' }}">
+                                        <i class="ti ti-calendar"></i>
+                                        <span>{{ $todo->tenggat_waktu->format('d M Y, H:i') }}</span>
+                                        @if($todo->apakah_terlambat && $todo->status !== 'selesai')
+                                            <span class="badge-overdue">Terlambat</span>
+                                        @endif
+                                    </div>
+                                @endif
                             </div>
+                            
+                            <div class="todo-meta">
+                                @if($todo->kategori)
+                                    <span class="kategori-badge">
+                                        <i class="ti ti-{{ $todo->kategori->ikon ?? 'tag' }}" style="color: {{ $todo->kategori->warna }}"></i>
+                                    </span>
+                                @endif
+                                
+                                <span class="priority-badge priority-{{ $todo->prioritas }}">
+                                    <i class="ti ti-point-filled"></i>
+                                    <span class="priority-text">{{ ucfirst($todo->prioritas) }}</span>
+                                </span>
+                                
+                                @if($todo->disematkan)
+                                    <span class="pin-badge">
+                                        <i class="ti ti-pin-filled"></i>
+                                    </span>
+                                @endif
+                            </div>
+                            
                             <div class="todo-actions">
-                                <a href="{{ route('todo.index') }}#edit-{{ $todo->id }}" class="action-btn">
+                                <a href="{{ route('todo.index') }}#edit-{{ $todo->id }}" class="btn btn-sm btn-light border-0">
                                     <i class="ti ti-edit"></i>
                                 </a>
                             </div>
@@ -319,18 +353,28 @@
     padding: 0.5rem;
 }
 
-/* todo rows */
+/* todo row list - consistent with todo/index */
 .todo-row {
     display: flex;
     align-items: center;
     gap: 1rem;
-    padding: 0.75rem 1rem;
-    border-radius: 6px;
+    padding: 1rem;
+    border-bottom: 1px solid #e5e5e5;
     transition: background 0.15s;
 }
 
 .todo-row:hover {
+    background: #f9f9f9;
+}
+
+.todo-row.todo-completed {
     background: #f5f5f5;
+}
+
+.todo-row.todo-completed .todo-title,
+.todo-row.todo-completed .todo-description {
+    text-decoration: line-through;
+    color: #a3a3a3;
 }
 
 .todo-checkbox {
@@ -338,76 +382,111 @@
 }
 
 .todo-content {
-    flex-grow: 1;
+    flex: 1;
     min-width: 0;
 }
 
 .todo-title {
     font-size: 0.9375rem;
+    font-weight: 500;
+    margin: 0;
     color: #000;
-    margin-bottom: 0.25rem;
+}
+
+.todo-description {
+    font-size: 0.875rem;
+    color: #737373;
+    margin: 0.25rem 0 0 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.todo-deadline {
+    display: flex;
+    align-items: center;
+    gap: 0.375rem;
+    font-size: 0.8125rem;
+    color: #737373;
+    margin-top: 0.375rem;
+}
+
+.todo-deadline i {
+    font-size: 0.875rem;
+}
+
+.todo-deadline.deadline-overdue {
+    color: #dc2626;
+}
+
+.badge-overdue {
+    font-size: 0.75rem;
+    padding: 0.125rem 0.375rem;
+    background: #fee;
+    color: #dc2626;
+    border-radius: 0.25rem;
+    font-weight: 500;
 }
 
 .todo-meta {
     display: flex;
-    flex-wrap: wrap;
+    align-items: center;
     gap: 0.5rem;
+    flex-shrink: 0;
 }
 
-.meta-badge {
+.kategori-badge i,
+.pin-badge i {
+    font-size: 1.125rem;
+}
+
+.priority-badge {
     display: inline-flex;
     align-items: center;
     gap: 0.25rem;
-    font-size: 0.75rem;
-    color: #737373;
-    padding: 0.125rem 0.5rem;
-    background: #f5f5f5;
-    border-radius: 4px;
+    padding: 0.25rem 0.625rem;
+    border-radius: 1rem;
+    font-size: 0.8125rem;
+    font-weight: 500;
 }
 
-.meta-badge i {
+.priority-badge i {
     font-size: 0.875rem;
 }
 
-.meta-badge.priority-tinggi {
+.priority-badge.priority-tinggi {
     background: #fee;
-    color: #c00;
+    color: #991b1b;
 }
 
-.meta-badge.priority-sedang {
-    background: #fef3e0;
-    color: #c70;
+.priority-badge.priority-tinggi i {
+    color: #dc2626;
 }
 
-.meta-badge.priority-rendah {
-    background: #e0f2fe;
-    color: #0369a1;
+.priority-badge.priority-sedang {
+    background: #fef3c7;
+    color: #92400e;
+}
+
+.priority-badge.priority-sedang i {
+    color: #f59e0b;
+}
+
+.priority-badge.priority-rendah {
+    background: #dbeafe;
+    color: #1e40af;
+}
+
+.priority-badge.priority-rendah i {
+    color: #3b82f6;
 }
 
 .todo-actions {
     flex-shrink: 0;
-    opacity: 0;
-    transition: opacity 0.15s;
 }
 
-.todo-row:hover .todo-actions {
-    opacity: 1;
-}
-
-.action-btn {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 28px;
-    height: 28px;
-    border-radius: 4px;
-    color: #737373;
-    transition: all 0.15s;
-}
-
-.action-btn:hover {
+.todo-actions .btn:hover {
     background: #e5e5e5;
-    color: #000;
 }
 
 /* empty state */
