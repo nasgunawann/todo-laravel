@@ -113,7 +113,7 @@
                 </div>
             </div>
         @empty
-            <div class="text-center py-5">
+            <div class="text-center py-5 empty-state-placeholder">
                 <i class="ti ti-list-check" style="font-size: 4rem; color: #d4d4d4;"></i>
                 <p class="text-muted mt-3">Tidak ada tugas</p>
                 <button type="button" class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#createTodoModal">

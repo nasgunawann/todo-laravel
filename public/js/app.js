@@ -154,7 +154,7 @@ function togglePin(todoId) {
 // =====================================
 function hapusTodo(todoId) {
     Swal.fire({
-        title: 'Hapus todo?',
+        title: 'Hapus Tugas?',
         text: 'Tindakan ini tidak dapat dibatalkan',
         icon: 'warning',
         showCancelButton: true,
@@ -173,7 +173,7 @@ function hapusTodo(todoId) {
                     $(`[data-todo-id="${todoId}"]`).fadeOut(300, function() {
                         $(this).remove();
                     });
-                    showToast('success', 'Todo berhasil dihapus');
+                    showToast('success', 'Tugas berhasil dihapus');
                 }
             });
         }
@@ -192,6 +192,9 @@ function submitCreateTodo() {
             $('#createTodoModal').modal('hide');
             form[0].reset();
             
+            // remove empty state if exists
+            $('#todo-grid .empty-state-placeholder').remove();
+
             // prepend new card (no reload!)
             $('#todo-grid').prepend(buildTodoCard(response.todo));
             
